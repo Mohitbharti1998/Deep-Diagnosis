@@ -1,0 +1,68 @@
+class LoginResponseModel {
+  final String token;
+  final int status;
+  final int id;
+
+  LoginResponseModel({this.token,this.id, this.status});
+
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
+    return LoginResponseModel(
+
+        token: json["token"] != null ? json['token'] : "",
+        id: json["id"] != -1 ? json['id'] : -1,
+        status: json["status"] != -1 ? json["status"] : -1);
+  }
+}
+-----------------------------------------------------------------------------
+class LoginRequestModel {
+  String email;
+  String password;
+
+  //constructor
+  LoginRequestModel({
+    this.email,
+    this.password,
+  });
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> map = {
+      'email': email.trim(),
+      'password': password.trim(),
+    };
+
+    return map;
+  }
+}
+
+----------------------------------------------------------------------------------
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future<LoginResponseModel> login(LoginRequestModel loginRequestModel) async {
+    String url = "http://deepdiagnosis.pythonanywhere.com/login";
+
+    final response = await http.post(url, body: loginRequestModel.toJson());
+
+    if (response.statusCode == 200) {
+      return LoginResponseModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+  
+  
+ ---------------------------------------------------------------------------------
+ 
+ 
+ LoginRequestModel loginRequestModel = new loginRequestModel();
+ loginRequestModel.email = email;
+ loginRequestModel.email = password;
+  
+ login(loginRequestModel).then((value) async {
+                      if (value != null) {
+                        setState(() {
+                          isApiCallProcess = false;
+                        });
+  
+  
