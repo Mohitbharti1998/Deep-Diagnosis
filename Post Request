@@ -64,5 +64,7 @@ Future<LoginResponseModel> login(LoginRequestModel loginRequestModel) async {
                         setState(() {
                           isApiCallProcess = false;
                         });
+                        
+                        token = value.token 
   
   
